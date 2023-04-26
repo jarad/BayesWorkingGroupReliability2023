@@ -46,8 +46,8 @@ location-scale distribution.
 
 - Exact observations: units have failed and we know when
 - Right censoring: units that have not yet failed
-    - Time censoring: test ends at a specified time
-    - Failure censoring: test ends after X units have failed
+    - Time (Type 1) censoring: test ends at a specified time
+    - Failure (Type 2) censoring: test ends after X units have failed
 - Left censoring: unit has failed, but precise time is unknown
 - Interval censoring: failure has occurred with an interval
 
@@ -112,5 +112,45 @@ Considered approaches:
     - ordered reference priors
     
     
-## Objective priors for reliability
+## Jeffreys priors
+
+![](include/jeffreys_priors.jpg)
+
+$\zeta_e = [\log(t_e)-\mu]/\sigma$
+
+## Reference priors
+
+![](include/reference_priors.jpg)
+
+$\zeta_e = [\log(t_e)-\mu]/\sigma$
+
+## Type 2 (failure) prior results
+
+- Jeffreys = unordered reference (Kass and Wasserman, 1996)
+- Ordered reference = IJ when shape and scale parameters
+- IJ priors invariant to one-to-one monotone reparameterizations
+- IJ != ordered reference when using $\{\zeta_e,\sigma\}$
+
+
+# Posteriors
+
+## Propriety
+
+- Ramos et al. (2020) suggest 2 failures is sufficient
+- Computationally, we needed 3 failures
+
+
+## Simulation study
+
+5,000 reps of 
+
+- $E[r]$ = 10, 25, 35, 50, 100,
+- $p_{fail}$ = 0.01, 0.05, 0.10, 0.50, and
+- $\pi(\log(t_{p_{r}}), \sigma)$ = flat and IJ
+
+Eliminated any simulations with less than 3 failures.
+
+## Coverage
+
+![](include/WeibullSimulationResults_pfail01.001.jpg)
 
