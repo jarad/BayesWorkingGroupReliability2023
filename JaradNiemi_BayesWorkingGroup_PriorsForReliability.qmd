@@ -1,0 +1,116 @@
+---
+title: "Priors for Reliability"
+author: "Jarad Niemi"
+date: "`r Sys.Date()`"
+format: 
+  revealjs:
+    incremental: true
+---
+
+# Introduction
+
+## Bearing cage
+
+![Bearing cage data](include/BearingCageEvent.jpg)
+
+## Rocket motor
+
+![Rocket motor](include/RocketMotorEventPlot.jpg)
+
+# Models
+
+## Log-location-scale family
+
+A random variable $T>0$ belongs to a log-location-scale family if
+$Y=\log(T)$ is a member of a location-scale family. 
+The cdf for a log-location-scale distribution is
+\begin{align}
+\label{equation:lls.cdf}
+ F(t;\mu, \sigma)&=\Phi\left [\frac{\log(t)-\mu}{\sigma}
+\right ], \,\, t > 0
+ \end{align}
+and the corresponding pdf is
+\begin{align}
+\label{equation:lls.pdf}
+ f(t;\mu, \sigma)&=\frac{1}{ \sigma t} \phi
+\left [
+\frac{\log(t)-\mu}{\sigma} \right],
+ \end{align}
+where $\Phi(z)$ and $\phi(z)=d\Phi(z)/dz$ are, respectively,
+the cdf and pdf for the
+particular standard
+location-scale distribution.
+
+
+## Censoring
+
+- Exact observations: units have failed and we know when
+- Right censoring: units that have not yet failed
+    - Time censoring: test ends at a specified time
+    - Failure censoring: test ends after X units have failed
+- Left censoring: unit has failed, but precise time is unknown
+- Interval censoring: failure has occurred with an interval
+
+
+## Likelihood
+
+For
+data consisting of $n$ exact failure times and right-censored observations,
+the likelihood is
+$$
+L(\mu,\sigma) = \prod_{i=1}^{n}
+\left\{ \frac{1}{\sigma t_{i}} \, \phi
+\left[\frac{ \log(t_{i}) -\mu}{\sigma}
+\right]
+\right\}^{\delta_{i}}
+\times
+\left\{1-\Phi \left[\frac{ \log(t_{i}) -\mu}{\sigma}
+\right] \right\}^{1-\delta_{i}},
+$$
+where, for observation $i$, 
+
+- $t_{i}$ is either a failure time or a right-censored time, 
+- $\delta_{i}=1$ for an exact failure time, and
+- $\delta_{i}=0$ for a right-censored observation.
+
+## Reparameterization
+
+Often the quantity of interest in reliability is the probability of failure at
+a specified time or the failure-time for a specific probability, 
+i.e. the $t_p$ quantile. 
+These are related through the expression
+$$t_{p}=\exp[\mu + \Phi^{-1}(p)\sigma].$$
+
+This reparameterization has two main benefits:
+
+- prior elicitiation
+- reduce correlation in the likelihood
+
+
+## Likelihood contours
+
+Weibull contours ($\beta = 1/\sigma$)
+
+![](include/RocketMotorContour_eta_beta.jpg)
+
+## Reparameterized contours
+
+Weibull contours ($\beta = 1/\sigma$)
+
+![](include/RocketMotorContour_t005_beta.jpg)
+
+
+# Priors
+
+## Objective priors
+
+Considered approaches:
+
+- Jeffreys priors
+- Independent Jeffreys priors (product of conditional Jeffreys priors)
+- Reference priors
+    - ordered reference priors
+    
+    
+## Objective priors for reliability
+
