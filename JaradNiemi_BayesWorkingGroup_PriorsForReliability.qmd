@@ -122,7 +122,7 @@ where, for observation $i$,
 
 ## Likelihood contours
 
-Weibull contours ($\beta = 1/\sigma$)
+Weibull contours ($\beta = 1/\sigma, \eta = e^\mu$)
 
 ![](include/RocketMotorContour_eta_beta.jpg)
 
@@ -137,7 +137,7 @@ Weibull contours ($\beta = 1/\sigma$)
 
 ## Priors considered
 
-- Objective
+- Default
     - Jeffreys priors
     - Independent Jeffreys priors 
         - product of conditional Jeffreys priors
@@ -167,25 +167,26 @@ $\zeta_e = [\log(t_e)-\mu]/\sigma$
 
 - Jeffreys = unordered reference (Kass and Wasserman, 1996)
 - Ordered reference = IJ when using shape and scale parameters
-- IJ priors invariant to one-to-one monotone reparameterizations
 - IJ != ordered reference when using $\{\zeta_e,\sigma\}$
+- IJ priors invariant to one-to-one monotone reparameterizations
 
 
 # Posteriors
 
 ## Propriety
 
-- Ramos et al. (2020) suggest 2 failures is sufficient for Weibull
-- Computationally, we needed 3 failures
+- Ramos et al. (2020) suggest 2 failures is sufficient for Weibull distribution.
+- For computational stability, we needed 3 failures for all distributions.
 
 
 ## Simulation study
 
 5,000 reps of 
 
-- $E[r]$ = 10, 25, 35, 50, 100,
+- $E[\mbox{events}]$ = 10, 25, 35, 50, 100,
 - $p_{fail}$ = 0.01, 0.05, 0.10, 0.50, and
 - $\pi(\log(t_{p_{r}}), \sigma)$ = flat and IJ
+- Weibull and log-normal distributions
 
 . . . 
 
@@ -213,6 +214,8 @@ Notes:
 
 ## Future Work
 
+- Coverage conditional on number of failures
+- Posterior propriety: 2 v 3 failures
 - Computation
     - MCMC (Stan) is overkill for two-parameter distributions
     - Gridding? Importance sampling? Rejection sampling?
