@@ -2,12 +2,30 @@
 title: "Priors for Reliability"
 author: "Jarad Niemi"
 date: "`r Sys.Date()`"
+date-format: iso
 format: 
   revealjs:
+    theme: serif
     incremental: true
 ---
 
-# Introduction
+## Priors for reliability {.smaller}
+
+:::{.nonincremental}
+- Data
+- Models
+    - Log-location-scale distributions
+    - Likelihood
+- Priors
+    - Objective
+    - Informative
+- Posteriors
+    - Propriety
+    - Coverage
+- Applications
+:::
+
+# Reliability data
 
 ## Bearing cage
 
@@ -23,12 +41,18 @@ format:
 
 A random variable $T>0$ belongs to a log-location-scale family if
 $Y=\log(T)$ is a member of a location-scale family. 
+
+. . . 
+
 The cdf for a log-location-scale distribution is
 \begin{align}
 \label{equation:lls.cdf}
  F(t;\mu, \sigma)&=\Phi\left [\frac{\log(t)-\mu}{\sigma}
 \right ], \,\, t > 0
  \end{align}
+ 
+. . . 
+ 
 and the corresponding pdf is
 \begin{align}
 \label{equation:lls.pdf}
@@ -36,10 +60,30 @@ and the corresponding pdf is
 \left [
 \frac{\log(t)-\mu}{\sigma} \right],
  \end{align}
+ 
+. . .
+ 
 where $\Phi(z)$ and $\phi(z)=d\Phi(z)/dz$ are, respectively,
-the cdf and pdf for the
-particular standard
-location-scale distribution.
+the cdf and pdf for the underlying location-scale distribution.
+
+
+## Reparameterization
+
+Often the quantity of interest in reliability is the probability of failure at
+a specified time or the failure-time for a specific probability, 
+i.e. the $t_p$ quantile. 
+
+. . . 
+
+These are related through the expression
+$$t_{p}=\exp[\mu + \Phi^{-1}(p)\sigma].$$
+
+. . . 
+
+This reparameterization has two main benefits:
+
+- prior elicitiation
+- reduce correlation in the likelihood
 
 
 ## Censoring
@@ -73,18 +117,7 @@ where, for observation $i$,
 - $\delta_{i}=1$ for an exact failure time, and
 - $\delta_{i}=0$ for a right-censored observation.
 
-## Reparameterization
 
-Often the quantity of interest in reliability is the probability of failure at
-a specified time or the failure-time for a specific probability, 
-i.e. the $t_p$ quantile. 
-These are related through the expression
-$$t_{p}=\exp[\mu + \Phi^{-1}(p)\sigma].$$
-
-This reparameterization has two main benefits:
-
-- prior elicitiation
-- reduce correlation in the likelihood
 
 
 ## Likelihood contours
@@ -102,14 +135,19 @@ Weibull contours ($\beta = 1/\sigma$)
 
 # Priors
 
-## Objective priors
+## Priors considered
 
-Considered approaches:
+- Objective
+    - Jeffreys priors
+    - Independent Jeffreys priors 
+        - product of conditional Jeffreys priors
+    - Reference priors
+        - unordered
+        - ordered 
+- Informative
+    - weakly informative
+    - informative for one parameter
 
-- Jeffreys priors
-- Independent Jeffreys priors (product of conditional Jeffreys priors)
-- Reference priors
-    - ordered reference priors
     
     
 ## Jeffreys priors
@@ -124,10 +162,11 @@ $\zeta_e = [\log(t_e)-\mu]/\sigma$
 
 $\zeta_e = [\log(t_e)-\mu]/\sigma$
 
+
 ## Type 2 (failure) prior results
 
 - Jeffreys = unordered reference (Kass and Wasserman, 1996)
-- Ordered reference = IJ when shape and scale parameters
+- Ordered reference = IJ when using shape and scale parameters
 - IJ priors invariant to one-to-one monotone reparameterizations
 - IJ != ordered reference when using $\{\zeta_e,\sigma\}$
 
@@ -136,7 +175,7 @@ $\zeta_e = [\log(t_e)-\mu]/\sigma$
 
 ## Propriety
 
-- Ramos et al. (2020) suggest 2 failures is sufficient
+- Ramos et al. (2020) suggest 2 failures is sufficient for Weibull
 - Computationally, we needed 3 failures
 
 
@@ -148,9 +187,34 @@ $\zeta_e = [\log(t_e)-\mu]/\sigma$
 - $p_{fail}$ = 0.01, 0.05, 0.10, 0.50, and
 - $\pi(\log(t_{p_{r}}), \sigma)$ = flat and IJ
 
-Eliminated any simulations with less than 3 failures.
+. . . 
+
+Notes:
+
+- Eliminated any simulations with less than 3 failures.
+- Used `lsinf` R package to compute elements of the Fisher information matrix.
 
 ## Coverage
 
 ![](include/WeibullSimulationResults_pfail01.001.jpg)
 
+# Applications
+
+## Bearing cage intervals
+
+![](include/BearingCage_Posterior_Comparison.jpg)
+
+## Rocket motor intervals
+
+![](include/RocketMotor_Posterior_Comparison.jpg)
+
+
+# Future work
+
+## Future Work
+
+- Computation
+    - MCMC (Stan) is overkill for two-parameter distributions
+    - Gridding? Importance sampling? Rejection sampling?
+- Accelerated failure time priors
+    - AFT add explanatory variable(s)
